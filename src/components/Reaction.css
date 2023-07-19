@@ -1,0 +1,16 @@
+button.reaction {
+  appearance: none;
+  height: 32px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background-color: var(--buttonBg);
+
+  &[aria-selected='true'] {
+    background-color: var(--accent);
+  }
+
+  > img {
+    height: 1.25em;
+    pointer-events: none;
+  }
+}

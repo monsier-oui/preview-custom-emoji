@@ -1,27 +1,46 @@
-/* eslint-env node */
-
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
+  ignorePatterns: ['/*.js', '/*.cjs', '/*.ts'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:tailwindcss/recommended',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: true,
-    tsconfigRootDir: __dirname,
+    project: './tsconfig.json',
   },
-  plugins: ['react-refresh'],
+  plugins: ['react', '@typescript-eslint', 'import', 'tailwindcss'],
   rules: {
-    'react-refresh/only-export-components': [
+    'react/react-in-jsx-scope': 'off',
+    'import/order': [
       'warn',
-      { allowConstantExport: true },
+      {
+        alphabetize: { order: 'asc', caseInsensitive: true },
+        'newlines-between': 'always',
+      },
     ],
-    '@typescript-eslint/no-non-null-assertion': 'off',
+    'tailwindcss/no-custom-classname': 'off',
   },
-}
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    'import/resolver': {
+      typescript: true,
+      node: true,
+    },
+  },
+};
