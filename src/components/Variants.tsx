@@ -1,3 +1,5 @@
+import { ChangeEvent, ChangeEventHandler } from 'react';
+
 const Variants = ({
   variants,
   value,
@@ -5,7 +7,7 @@ const Variants = ({
 }: {
   variants: string[];
   value: string;
-  setCurrentVariant: React.Dispatch;
+  setCurrentVariant: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const handleChangeVariant: ChangeEventHandler = (
     event: ChangeEvent<HTMLInputElement>

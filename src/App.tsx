@@ -3,6 +3,7 @@ import { useState, useEffect, ChangeEventHandler, ChangeEvent } from 'react';
 
 import './App.css';
 import Alert from './components/Alert';
+import type { AlertProps } from './components/Alert';
 import Checklist from './components/Checklist';
 import Reaction from './components/Reaction';
 import Variants from './components/Variants';
@@ -10,7 +11,7 @@ import Variants from './components/Variants';
 function App() {
   const [files, setFiles] = useState<File[]>([]);
   const [srcs, setSrcs] = useState<string[]>([]);
-  const [alerts, setAlerts] = useState<Alert>([]);
+  const [alerts, setAlerts] = useState<AlertProps[]>([]);
 
   useEffect(() => {
     if (!files) return;
@@ -52,22 +53,24 @@ function App() {
       const reader: FileReader | null = new FileReader();
       reader.onloadend = () => {
         const result = reader.result;
-        const image = new Image();
-        image.src = result;
-        image.onload = () => {
-          const width = image.naturalWidth;
-          const height = image.naturalHeight;
+        if (result) {
+          const image = new Image();
+          image.src = result.toString();
+          image.onload = () => {
+            const width = image.naturalWidth;
+            const height = image.naturalHeight;
 
-          if (width / height > 10) {
-            setAlerts([
-              ...alerts,
-              {
-                type: 'warning',
-                text: `${file.name} - アスペクト比が10:1を超えています`,
-              },
-            ]);
-          }
-        };
+            if (width / height > 10) {
+              setAlerts([
+                ...alerts,
+                {
+                  type: 'warning',
+                  text: `${file.name} - アスペクト比が10:1を超えています`,
+                },
+              ]);
+            }
+          };
+        }
 
         if (result && typeof result === 'string') {
           setSrcs((srcs) =>
