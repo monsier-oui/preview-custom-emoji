@@ -24,7 +24,7 @@ function App() {
           ...alerts,
           {
             type: 'error',
-            text: `${file.name} - ファイル名に英数字とアンダースコア以外の文字が含まれています`,
+            text: `${file.name} - ファイル名に英数字とアンダースコア以外の文字が含まれています。ファイル名を変更してください。`,
           },
         ]);
         error = true;
@@ -35,7 +35,7 @@ function App() {
           ...alerts,
           {
             type: 'error',
-            text: `${file.name} - ファイルサイズが64KBを超えています`,
+            text: `${file.name} - ファイルサイズが64KBを超えています。画像を圧縮してください。`,
           },
         ]);
         error = true;
@@ -65,7 +65,7 @@ function App() {
                 ...alerts,
                 {
                   type: 'warning',
-                  text: `${file.name} - アスペクト比が10:1を超えています`,
+                  text: `${file.name} - アスペクト比が10:1を超えています。横幅を小さくしましょう。`,
                 },
               ]);
             }
