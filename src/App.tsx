@@ -16,12 +16,13 @@ function App() {
   useEffect(() => {
     if (!files) return;
 
-    files.forEach((file) => {
+    for (const file of files) {
       let error = false;
+      console.log(file.name);
 
       if (!/^\w+\.(png|gif)$/.test(file.name)) {
-        setAlerts([
-          ...alerts,
+        setAlerts((prevState) => [
+          ...prevState,
           {
             type: 'error',
             text: `${file.name} - ファイル名に英数字とアンダースコア以外の文字が含まれています。ファイル名を変更してください。`,
@@ -31,8 +32,8 @@ function App() {
       }
 
       if (file.size > 1024 * 64) {
-        setAlerts([
-          ...alerts,
+        setAlerts((prevState) => [
+          ...prevState,
           {
             type: 'error',
             text: `${file.name} - ファイルサイズが64KBを超えています。画像を圧縮してください。`,
@@ -40,15 +41,16 @@ function App() {
         ]);
         error = true;
       } else if (file.size > 1024 * 50) {
-        setAlerts([
-          ...alerts,
+        setAlerts((prevState) => [
+          ...prevState,
           {
             type: 'warning',
             text: `${file.name} - ファイルサイズが50KBを超えています`,
           },
         ]);
       }
-      if (error) return;
+      console.log({ error });
+      if (error) continue;
 
       const reader: FileReader | null = new FileReader();
       reader.onloadend = () => {
@@ -61,8 +63,8 @@ function App() {
             const height = image.naturalHeight;
 
             if (width / height > 10) {
-              setAlerts([
-                ...alerts,
+              setAlerts((prevState) => [
+                ...prevState,
                 {
                   type: 'warning',
                   text: `${file.name} - アスペクト比が10:1を超えています。横幅を小さくしましょう。`,
@@ -79,7 +81,7 @@ function App() {
         }
       };
       reader.readAsDataURL(file);
-    });
+    }
   }, [files]);
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (
