@@ -66,13 +66,23 @@ function App() {
               setAlerts((prevState) => [
                 ...prevState,
                 {
-                  type: 'warning',
+                  type: 'error',
                   text: `${file.name} - アスペクト比が10:1を超えています。横幅を小さくしましょう。`,
+                },
+              ]);
+              error = true;
+            } else if (width / height > 5) {
+              setAlerts((prevState) => [
+                ...prevState,
+                {
+                  type: 'warning',
+                  text: `${file.name} - アスペクト比が5:1を超えています`,
                 },
               ]);
             }
           };
         }
+        if (error) return;
 
         if (result && typeof result === 'string') {
           setSrcs((srcs) =>
