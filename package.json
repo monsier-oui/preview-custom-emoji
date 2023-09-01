@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "watch": "tsc --noEmit --watch",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint --fix --ext .js,.cjs,.ts,.tsx --ignore-path .gitignore .",
     "format": "prettier --write --ignore-path .girignore '**/*.{js,cjs,ts,tsx,css,html}'",
