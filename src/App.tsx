@@ -1,4 +1,5 @@
 import { clsx } from 'clsx';
+import * as React from 'react';
 import { useState, useEffect, ChangeEventHandler, ChangeEvent } from 'react';
 
 import './App.css';
@@ -7,6 +8,7 @@ import type { AlertProps } from './components/Alert';
 import Checklist from './components/Checklist';
 import Reaction from './components/Reaction';
 import Variants from './components/Variants';
+import type { VariantsState } from './components/Variants';
 
 function App() {
   const [files, setFiles] = useState<File[]>([]);
@@ -15,6 +17,7 @@ function App() {
 
   useEffect(() => {
     if (!files) return;
+    console.log(files);
 
     for (const file of files) {
       let error = false;
@@ -25,7 +28,7 @@ function App() {
           ...prevState,
           {
             type: 'error',
-            text: `${file.name} - ファイル名に英数字とアンダースコア以外の文字が含まれています。ファイル名を変更してください。`,
+            text: `${file.name} - ファイル名に英数字とアンダースコア以外の文字が含まれているか、PNGまたはGIF以外の拡張子です。ファイル名を変更してください。`,
           },
         ]);
         error = true;
@@ -49,7 +52,6 @@ function App() {
           },
         ]);
       }
-      console.log({ error });
       if (error) continue;
 
       const reader: FileReader | null = new FileReader();
@@ -104,16 +106,16 @@ function App() {
     setFiles(inputFiles);
   };
 
-  const variants = {
-    base: ['light', 'dark'],
-    size: ['x1', 'x2', 'x3', 'x4'],
-    screen: ['sm', 'lg'],
+  const variants: { [key: string]: { title: string; items: string[] } } = {
+    base: { title: '背景色', items: ['light', 'dark'] },
+    size: { title: 'サイズ', items: ['x1', 'x2', 'x3', 'x4'] },
+    screen: { title: '画面', items: ['sm', 'lg'] },
   };
-  const [currentBase, setCurrentBase] = useState<string>(variants.base[0]);
-  const [currentSize, setCurrentSize] = useState<string>(variants.size[0]);
-  const [currentScreen, setCurrentScreen] = useState<string>(
-    variants.screen[0]
-  );
+  const [current, setCurrent] = useState<VariantsState>({
+    base: variants.base.items[0],
+    size: variants.size.items[0],
+    screen: variants.screen.items[0],
+  });
 
   return (
     <>
@@ -137,40 +139,30 @@ function App() {
           {files && (
             <div className="mt-3 md:mt-6">
               <dl className="grid grid-cols-[auto_1fr] items-center gap-x-2">
-                <dt className="">背景色</dt>
-                <dd>
-                  <Variants
-                    variants={variants.base}
-                    value={currentBase}
-                    setCurrentVariant={setCurrentBase}
-                  />
-                </dd>
-                <dt className="">サイズ</dt>
-                <dd>
-                  <Variants
-                    variants={variants.size}
-                    value={currentSize}
-                    setCurrentVariant={setCurrentSize}
-                  />
-                </dd>
-                <dt className="">画面</dt>
-                <dd>
-                  <Variants
-                    variants={variants.screen}
-                    value={currentScreen}
-                    setCurrentVariant={setCurrentScreen}
-                  />
-                </dd>
+                {Object.keys(variants).map((key) => (
+                  <React.Fragment key={key}>
+                    <dt className="">{variants[key].title}</dt>
+                    <dd>
+                      <Variants
+                        variants={variants[key].items}
+                        value={current[key]}
+                        variantsKey={key}
+                        current={current}
+                        setCurrentVariant={setCurrent}
+                      />
+                    </dd>
+                  </React.Fragment>
+                ))}
               </dl>
               <div
                 className={clsx(
                   'article',
-                  `article-${currentBase}`,
-                  currentScreen === 'sm' && 'max-w-xs'
+                  `article-${current.base}`,
+                  current.screen === 'sm' && 'max-w-xs'
                 )}>
                 <div
                   className={clsx(
-                    currentSize !== 'x1' && `mfm-${currentSize}`
+                    current.size !== 'x1' && `mfm-${current.size}`
                   )}>
                   {srcs?.length > 0 &&
                     srcs.map((src, i) => <img src={src} alt={`alt`} key={i} />)}

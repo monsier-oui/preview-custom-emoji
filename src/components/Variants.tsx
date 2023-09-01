@@ -1,18 +1,26 @@
 import { ChangeEvent, ChangeEventHandler } from 'react';
 
+export type VariantsState = {
+  [key: string]: string;
+};
+
 const Variants = ({
   variants,
   value,
+  variantsKey,
+  current,
   setCurrentVariant,
 }: {
   variants: string[];
   value: string;
-  setCurrentVariant: React.Dispatch<React.SetStateAction<string>>;
+  variantsKey: string;
+  current: VariantsState;
+  setCurrentVariant: React.Dispatch<React.SetStateAction<VariantsState>>;
 }) => {
   const handleChangeVariant: ChangeEventHandler = (
     event: ChangeEvent<HTMLInputElement>
   ) => {
-    setCurrentVariant(event.target.value);
+    setCurrentVariant({ ...current, [variantsKey]: event.target.value });
   };
 
   return (
