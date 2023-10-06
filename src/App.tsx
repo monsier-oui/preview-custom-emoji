@@ -34,23 +34,15 @@ function App() {
         error = true;
       }
 
-      if (file.size > 1024 * 64) {
+      if (file.size > 1024 * 50) {
         setAlerts((prevState) => [
           ...prevState,
           {
             type: 'error',
-            text: `${file.name} - ファイルサイズが64KBを超えています。画像を圧縮してください。`,
+            text: `${file.name} - ファイルサイズが50KBを超えています。画像を軽量化してください。`,
           },
         ]);
         error = true;
-      } else if (file.size > 1024 * 50) {
-        setAlerts((prevState) => [
-          ...prevState,
-          {
-            type: 'warning',
-            text: `${file.name} - ファイルサイズが50KBを超えています`,
-          },
-        ]);
       }
       if (error) continue;
 
