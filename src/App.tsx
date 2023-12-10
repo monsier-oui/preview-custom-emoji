@@ -23,7 +23,7 @@ function App() {
       let error = false;
       console.log(file.name);
 
-      if (!/^\w+\.(png|gif)$/.test(file.name)) {
+      if (!/^\w+\.(png|gif|webp)$/.test(file.name)) {
         setAlerts((prevState) => [
           ...prevState,
           {
@@ -119,7 +119,7 @@ function App() {
           <input
             type="file"
             className="file-input w-full max-w-xs"
-            accept="image/png,image/gif"
+            accept="image/png,image/gif,image/webp"
             multiple
             onChange={handleInputChange}
           />
